@@ -1,6 +1,4 @@
 FROM pytorch/pytorch:2.2.0-cuda12.1-cudnn8-devel AS build
-ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
-ENV TORCH_CUDA_ARCH_LIST="7.5 8.0 8.6+PTX"
 
 # devcontainer Options
 ARG INSTALL_ZSH="true"
@@ -9,6 +7,12 @@ ARG USERNAME="kakkoii1337"
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 ARG LIBRARY_SCRIPT_PATH=".devcontainer/library-scripts"
+ARG PYTHON_VERSION="python3.10"
+
+# Environment variables
+ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
+ENV TORCH_CUDA_ARCH_LIST="7.5 8.0 8.6+PTX"
+ENV PYTHON_VERSION=${PYTHON_VERSION}
 
 # Copy necessary scripts, install system deps and create non-root user
 COPY ${LIBRARY_SCRIPT_PATH}/*.sh ${LIBRARY_SCRIPT_PATH}/*.env /tmp/library-scripts/
@@ -30,18 +34,47 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     && bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "true" "true" \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-# Install Python devcontainer dependencies
-ENV PIPX_HOME=/usr/local/py-utils \
-    PIPX_BIN_DIR=/usr/local/py-utils/bin
-ENV PATH=${PATH}:${PIPX_BIN_DIR}
-RUN if [ ! -e /usr/local/bin/python3 ]; then ln -s /opt/conda/bin/python3 /usr/local/bin/python3; fi
-RUN bash /tmp/library-scripts/python-debian.sh "none" "/usr/local" "${PIPX_HOME}" "${USERNAME}" \ 
-    && apt-get clean -y && rm -rf /var/lib/apt/lists/*
-
-# Switch to non-root user and activate virtual env
+# Switch to non-root user
 USER $USERNAME
 ENV HOME_PATH="/home/$USERNAME"
+ENV PACKAGES_PATH="${HOME_PATH}/.venv/lib/${PYTHON_VERSION}/site-packages/"
+ARG CACHEBUST=1
+
+# Setup virtual env
 RUN python -m venv ${HOME_PATH}/.venv
 SHELL ["/bin/bash","-c"]
 ENV PATH="${HOME_PATH}/.venv/bin:${PATH}"
+
+# Debugging: Show contents before linking
+RUN ls -l /opt/conda/lib/${PYTHON_VERSION}/site-packages/
+RUN ls -l ${PACKAGES_PATH}
+
+# Copy torch and torchvision from the Conda install to the virtual environment
+RUN rm -rf ${PACKAGES_PATH}/torch* \
+    && rm -rf ${PACKAGES_PATH}/torchvision* \
+    && cd /opt/conda/lib/${PYTHON_VERSION}/site-packages \
+    # && cp -rp torch ${HOME_PATH}/.venv/lib/${PYTHON_VERSION}/site-packages/ 
+    && cp -rp torch* ${PACKAGES_PATH} \
+    && cp -rp torchvision* ${PACKAGES_PATH}
+
+# Create download directory
+ARG DOWNLOAD_PATH="${HOME_PATH}/downloads"
+ENV DOWNLOAD_PATH=${DOWNLOAD_PATH}
+RUN mkdir ${DOWNLOAD_PATH}
+
+# Download exllamav2-0.1.8+cu121.torch2.2.2-cp310-cp310-linux_x86_64.whl
+RUN wget "https://github.com/turboderp/exllamav2/releases/download/v0.1.8/exllamav2-0.1.8+cu121.torch2.2.2-cp310-cp310-linux_x86_64.whl" -P ${DOWNLOAD_PATH}
+# RUN pip install --no-cache-dir --no-deps --no-index --find-links ${PACKAGES_PATH} ${DOWNLOAD_PATH}/exllamav2-0.1.8+cu121.torch2.2.2-cp310-cp310-linux_x86_64.whl
+
+
+# Download llama_cpp_python-0.2.90-cp310-cp310-linux_x86_64.whl
+RUN wget "https://github.com/abetlen/llama-cpp-python/releases/download/v0.2.90-cu121/llama_cpp_python-0.2.90-cp310-cp310-linux_x86_64.whl" -P ${DOWNLOAD_PATH}
+#RUN pip install --no-cache-dir --no-deps --no-index --find-links ${PACKAGES_PATH} ${DOWNLOAD_PATH}/llama_cpp_python-0.2.90-cp310-cp310-linux_x86_64.whl
+
+   
+# Download llama_cpp_python-0.2.90-cp310-cp310-linux_x86_64.whl
+# RUN pip wheel --no-cache-dir --no-deps --wheel-dir ${DOWNLOAD_PATH} llama-cpp-python \
+#     --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/12.1 --verbose
+# RUN source ${HOME_PATH}/.venv/bin/activate \
+#     && pip install "${CACHE_PATH}/llama_cpp_python-0.2.90-cp310-cp310-linux_x86_64.whl"
 

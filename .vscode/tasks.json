@@ -12,6 +12,16 @@
             "problemMatcher": []
         },
         {
+            "label": "Docker: build devcontainer",
+            "type": "shell",
+            "command": "/bin/bash",
+            "args": [
+                "-c",
+                "cd ${workspaceFolder}/.vscode && python docker_build_devcontainer.py"
+            ],
+            "problemMatcher": []
+        },
+        {
             "label": "Docker: push",
             "type": "shell",
             "command": "/bin/bash",
