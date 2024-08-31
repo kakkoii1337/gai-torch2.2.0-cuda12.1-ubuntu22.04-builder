@@ -1,7 +1,7 @@
 import toml,os,subprocess
 
-repo_name="kakkoii/"
-base_name="gai-torch2.2.0-cuda12.1-ubuntu22.04-builder"
+repo_name="kakkoii1337/"
+base_name="gai_torch2.2.0_cuda12.1_ubuntu22.04_builder"
 
 ## Update version in pyproject.toml
 def __update_version(pyproject_path):

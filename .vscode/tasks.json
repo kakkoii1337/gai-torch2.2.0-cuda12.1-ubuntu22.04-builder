@@ -30,6 +30,16 @@
                 "cd ${workspaceFolder}/.vscode && python docker_push.py"
             ],
             "problemMatcher": []
+        },
+        {
+            "label": "Docker: push devcontainer",
+            "type": "shell",
+            "command": "/bin/bash",
+            "args": [
+                "-c",
+                "cd ${workspaceFolder}/.vscode && python docker_push_devcontainer.py"
+            ],
+            "problemMatcher": []
         }
     ]
 }

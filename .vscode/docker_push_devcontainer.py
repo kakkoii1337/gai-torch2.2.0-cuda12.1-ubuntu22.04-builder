@@ -1,6 +1,7 @@
 import toml,os,subprocess
 
-base_name="gai-torch2.2.0-cuda12.1-ubuntu22.04-devcontainer"
+repo_name="kakkoii1337/"
+base_name="gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer"
 
 ## Update version in pyproject.toml
 def __get_version(pyproject_path):
@@ -14,15 +15,15 @@ def main():
 
     # Push version from the pyproject.toml file
     version = __get_version(pyproject_path=pyproject_path)
-    os.system(f"docker tag {base_name}:{version} kakkoii1337/{base_name}:{version}")
-    os.system(f"docker push kakkoii1337/{base_name}:{version}")
-    print(f"Pushed image kakkoii1337/{base_name}:{version}")
+    os.system(f"docker tag {repo_name}{base_name}:{version} {repo_name}{base_name}:{version}")
+    os.system(f"docker push {repo_name}{base_name}:{version}")
+    print(f"Pushed image {repo_name}{base_name}:{version}")
 
     # Push latest
     version = "latest"
-    os.system(f"docker tag {base_name}:{version} kakkoii1337/{base_name}:{version}")
-    os.system(f"docker push kakkoii1337/{base_name}:{version}")
-    print(f"Pushed image kakkoii1337/{base_name}:{version}")
+    os.system(f"docker tag {base_name}:{version} {repo_name}{base_name}:{version}")
+    os.system(f"docker push {repo_name}{base_name}:{version}")
+    print(f"Pushed image {repo_name}{base_name}:{version}")
 
 if __name__ == "__main__":
     main()
