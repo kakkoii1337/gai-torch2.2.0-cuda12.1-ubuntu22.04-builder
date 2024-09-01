@@ -127,6 +127,7 @@ def _parse_arguments():
     parser.add_argument("--repo_name", default="kakkoii1337/", help="Repository name for Docker image.")
     parser.add_argument("--docker_file", default="./Dockerfile", help="Path to the Dockerfile used for building the image.")
     parser.add_argument("--context_dir", default="..", help="Path to the Dockerfile used for building the image.")
+    parser.add_argument("--no-cache", action="store_true", help="Do not use cache when building the image.")
     return parser.parse_args()
 
 """
@@ -148,6 +149,7 @@ def main():
             pyproject_path=pyproject_path,
             dockerfile_path=args.docker_file,
             dockercontext_path=os.path.join(here,args.context_dir),
+            no_cache=args.no_cache
         )
     elif args.task == "push":
         _docker_push(

@@ -27,7 +27,8 @@ RUN wget "https://download.pytorch.org/whl/cu121/nvidia_cuda_cupti_cu12-12.1.105
 RUN wget "https://download.pytorch.org/whl/cu121/nvidia_nvtx_cu12-12.1.105-py3-none-manylinux1_x86_64.whl" -P /tmp/gai-downloads
 RUN wget "https://download.pytorch.org/whl/cu121/nvidia_cufft_cu12-11.0.2.54-py3-none-manylinux1_x86_64.whl" -P /tmp/gai-downloads
 
-
+# Download cuda_12.1.1_530.30.02_linux for Linx WSL-Ubuntu
+# RUN wget "wget https://developer.download.nvidia.com/compute/cuda/12.1.1/local_installers/cuda_12.1.1_530.30.02_linux.run" -P /tmp/gai-downloads
 
 
 

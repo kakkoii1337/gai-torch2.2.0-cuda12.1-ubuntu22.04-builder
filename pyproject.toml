@@ -1,8 +1,8 @@
 [project]
 name = "torch2.2.0-cuda12.1-ubuntu22.04-base"
-version = "1.0.96"
+version = "1.0.103"
 requires-python = ">=3.10"
-dependencies = [ "toml>=0.10.2", "rich>=13.8.0",]
+dependencies = [ "gai-sdk>=0.256",]
 
 [build-system]
 requires = [ "setuptools>=61.0",]

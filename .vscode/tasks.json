@@ -27,7 +27,7 @@
             "command": "/bin/bash",
             "args": [
                 "-c",
-                "cd ${workspaceFolder}/.vscode && python docker_tools.py build gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer --repo_name='kakkoii1337' --docker_file='../.devcontainer/Dockerfile.devcontainer' "
+                "cd ${workspaceFolder}/.vscode && python docker_tools.py build gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer --repo_name='kakkoii1337' --docker_file='../.devcontainer/Dockerfile.devcontainer' --no-cache "
                 //                "cd ${workspaceFolder}/.vscode && python docker_build_devcontainer.py"
             ],
             "problemMatcher": []
