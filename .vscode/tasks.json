@@ -2,12 +2,22 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Docker: build",
+            "label": "Docker: build base",
             "type": "shell",
             "command": "/bin/bash",
             "args": [
                 "-c",
-                "cd ${workspaceFolder}/.vscode && python docker_build.py"
+                "cd ${workspaceFolder} && python .vscode/docker_tools.py build gai_torch2.2.0_cuda12.1_ubuntu22.04_base --repo_name='kakkoii1337' --docker_file='.devcontainer/Dockerfile.base' --context_dir='..'"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: push base",
+            "type": "shell",
+            "command": "/bin/bash",
+            "args": [
+                "-c",
+                "cd ${workspaceFolder} && python .vscode/docker_tools.py push gai_torch2.2.0_cuda12.1_ubuntu22.04_base --repo_name='kakkoii1337' --docker_file='.devcontainer/Dockerfile.base' --context_dir='..'"
             ],
             "problemMatcher": []
         },
@@ -17,7 +27,28 @@
             "command": "/bin/bash",
             "args": [
                 "-c",
-                "cd ${workspaceFolder}/.vscode && python docker_build_devcontainer.py"
+                "cd ${workspaceFolder}/.vscode && python docker_tools.py build gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer --repo_name='kakkoii1337' --docker_file='../.devcontainer/Dockerfile.devcontainer' "
+                //                "cd ${workspaceFolder}/.vscode && python docker_build_devcontainer.py"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: push devcontainer",
+            "type": "shell",
+            "command": "/bin/bash",
+            "args": [
+                "-c",
+                "cd ${workspaceFolder}/.vscode && python docker_tools.py push gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer --repo_name='kakkoii1337' --docker_file='../.devcontainer/Dockerfile.devcontainer' "
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: build",
+            "type": "shell",
+            "command": "/bin/bash",
+            "args": [
+                "-c",
+                "cd ${workspaceFolder}/.vscode && python docker_build.py gai_torch2.2.0_cuda12.1_ubuntu22.04_builder --repo_name='kakkoii1337'"
             ],
             "problemMatcher": []
         },
@@ -31,15 +62,5 @@
             ],
             "problemMatcher": []
         },
-        {
-            "label": "Docker: push devcontainer",
-            "type": "shell",
-            "command": "/bin/bash",
-            "args": [
-                "-c",
-                "cd ${workspaceFolder}/.vscode && python docker_push_devcontainer.py"
-            ],
-            "problemMatcher": []
-        }
     ]
 }

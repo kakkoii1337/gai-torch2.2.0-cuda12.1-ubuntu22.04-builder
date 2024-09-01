@@ -1,0 +1,37 @@
+FROM debian:stable-slim AS downloader
+
+# Install wget
+RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
+
+# https://download.pytorch.org/whl/torch_stable.html
+RUN mkdir /tmp/gai-downloads
+
+# Download exllamav2-0.1.8+cu121.torch2.2.2-cp310-cp310-linux_x86_64.whl
+RUN wget "https://github.com/turboderp/exllamav2/releases/download/v0.1.8/exllamav2-0.1.8+cu121.torch2.2.2-cp310-cp310-linux_x86_64.whl" -P /tmp/gai-downloads
+
+# Download llama_cpp_python-0.2.90-cp310-cp310-linux_x86_64.whl
+RUN wget "https://github.com/abetlen/llama-cpp-python/releases/download/v0.2.90-cu121/llama_cpp_python-0.2.90-cp310-cp310-linux_x86_64.whl" -P /tmp/gai-downloads
+
+# Download torch-2.2.0+cu121-cp310-cp310-linux_x86_64.whl
+RUN wget "https://download.pytorch.org/whl/cu121/torch-2.2.0%2Bcu121-cp310-cp310-linux_x86_64.whl" -P /tmp/gai-downloads
+
+# Download nvidia_cudnn_cu12-8.9.2.26-py3-none-manylinux1_x86_64.whl
+RUN wget https://download.pytorch.org/whl/cu121/nvidia_cudnn_cu12-8.9.2.26-py3-none-manylinux1_x86_64.whl -P /tmp/gai-downloads
+
+RUN wget https://download.pytorch.org/whl/cu121/nvidia_cusolver_cu12-11.4.5.107-py3-none-manylinux1_x86_64.whl -P /tmp/gai-downloads
+
+RUN wget https://download.pytorch.org/whl/cu121/nvidia_cusparse_cu12-12.1.0.106-py3-none-manylinux1_x86_64.whl -P /tmp/gai-downloads
+
+RUN wget https://download.pytorch.org/whl/cu121/nvidia_cublas_cu12-12.1.3.1-py3-none-manylinux1_x86_64.whl -P /tmp/gai-downloads
+
+RUN wget https://download.pytorch.org/whl/triton-2.2.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl -P /tmp/gai-downloads
+
+RUN wget https://download.pytorch.org/whl/cu121/nvidia_cufft_cu12-11.0.2.54-py3-none-manylinux1_x86_64.whl -P /tmp/gai-downloads
+
+RUN wget https://download.pytorch.org/whl/cu121/nvidia_nccl_cu12-2.19.3-py3-none-manylinux1_x86_64.whl -P /tmp/gai-downloads
+
+RUN wget https://download.pytorch.org/whl/cu121/nvidia_cuda_cupti_cu12-12.1.105-py3-none-manylinux1_x86_64.whl -P /tmp/gai-downloads
+
+RUN wget https://download.pytorch.org/whl/cu121/nvidia_curand_cu12-10.3.2.106-py3-none-manylinux1_x86_64.whl -P /tmp/gai-downloads
+
+RUN wget https://download.pytorch.org/whl/cu121/nvidia_cuda_nvrtc_cu12-12.1.105-py3-none-manylinux1_x86_64.whl -P /tmp/gai-downloads

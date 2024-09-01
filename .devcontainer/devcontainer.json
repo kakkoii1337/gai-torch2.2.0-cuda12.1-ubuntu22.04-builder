@@ -1,5 +1,5 @@
 {
-	"name": "gai-ttt-svr",
+	"name": "gai-torch2.2.0-cuda12.1-ubuntu22.04-builder",
 	"build": {
 		"dockerfile": "Dockerfile.devcontainer",
 		"args": {
@@ -27,12 +27,12 @@
 			]
 		}
 	},
-	"forwardPorts": [
-		12031
-	],
-	"appPort": [
-		"12031:12031"
-	],
-	"remoteUser": "kakkoii1337",
+	// "features": {
+	// 	"ghcr.io/devcontainers/features/docker-in-docker:1": {
+	// 		"version": "latest",
+	// 		"moby": true
+	// 	}
+	// },
+	//"remoteUser": "kakkoii1337",
 	//"postCreateCommand": "/bin/bash ${HOME}/postCreateCommand.sh"
 }
