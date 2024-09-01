@@ -33,6 +33,6 @@
 	// 		"moby": true
 	// 	}
 	// },
-	//"remoteUser": "kakkoii1337",
-	//"postCreateCommand": "/bin/bash ${HOME}/postCreateCommand.sh"
+	"remoteUser": "kakkoii1337",
+	"postCreateCommand": "/bin/bash ${HOME}/postCreateCommand.sh"
 }
