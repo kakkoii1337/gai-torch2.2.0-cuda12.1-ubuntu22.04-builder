@@ -1,6 +1,6 @@
 [project]
-name = "torch2.2.0-cuda12.1-ubuntu22.04-base"
-version = "1.0.103"
+name = "torch2.2.0_cuda12.1_ubuntu22.04_base"
+version = "1.0.142"
 requires-python = ">=3.10"
 dependencies = [ "gai-sdk>=0.256",]
 

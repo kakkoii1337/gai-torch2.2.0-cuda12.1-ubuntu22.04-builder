@@ -1,7 +1,7 @@
 {
 	"name": "gai-torch2.2.0-cuda12.1-ubuntu22.04-builder",
 	"build": {
-		"dockerfile": "Dockerfile.devcontainer",
+		"dockerfile": "Dockerfile",
 		"args": {
 			"USERNAME": "kakkoii1337",
 			"CACHEBUST": "1"
@@ -27,12 +27,12 @@
 			]
 		}
 	},
-	// "features": {
-	// 	"ghcr.io/devcontainers/features/docker-in-docker:1": {
-	// 		"version": "latest",
-	// 		"moby": true
-	// 	}
-	// },
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:1": {
+			"version": "latest",
+			"moby": true
+		}
+	},
 	"remoteUser": "kakkoii1337",
 	"postCreateCommand": "/bin/bash ${HOME}/postCreateCommand.sh"
 }

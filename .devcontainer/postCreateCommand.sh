@@ -1,3 +1,9 @@
-ls ~/.venv/lib/python3.10/site-packages
+# Install utils so that we can run vscode tasks.
 whoami
-# pip install -e .
+
+source ~/.venv/bin/activate
+pip install -e .
+
+pip list | grep numpy
+pip list | grep gai-sdk
+pip list | grep torch

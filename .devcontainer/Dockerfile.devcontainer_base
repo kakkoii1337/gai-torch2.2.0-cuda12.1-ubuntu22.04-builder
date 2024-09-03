@@ -1,0 +1,73 @@
+FROM pytorch/pytorch:2.2.0-cuda12.1-cudnn8-devel
+
+# devcontainer Options
+ARG INSTALL_ZSH="true"
+ARG UPGRADE_PACKAGES="false"
+ARG USERNAME="kakkoii1337"
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
+ARG LIBRARY_SCRIPT_PATH=".devcontainer/library-scripts"
+ARG PYTHON_VERSION="python3.10"
+ARG BASE_VERSION="UNKNOWN"
+
+# Environment variables
+ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
+ENV TORCH_CUDA_ARCH_LIST="7.5 8.0 8.6+PTX"
+ENV PYTHON_VERSION=${PYTHON_VERSION}
+
+# Copy necessary scripts, install system deps and create non-root user
+COPY ${LIBRARY_SCRIPT_PATH}/*.sh ${LIBRARY_SCRIPT_PATH}/*.env /tmp/library-scripts/
+
+# Install system deps
+RUN --mount=type=cache,target=/var/lib/apt/lists \
+    --mount=type=cache,target=/var/cache,sharing=locked \
+    apt-get update  \
+    && apt-get upgrade --assume-yes \
+    && apt-get install --assume-yes --no-install-recommends \
+        sudo \
+        ca-certificates \
+        gnupg \
+    # Install common packages, non-root user
+    && bash /tmp/library-scripts/common-debian.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" "true" "true" \
+    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* \
+    && groupadd docker \
+    && usermod -aG docker $USERNAME
+
+# Switch to non-root user
+ARG CACHEBUST=1
+ENV USERNAME=${USERNAME}
+USER $USERNAME
+ENV HOME_PATH="/home/$USERNAME"
+
+# Switch to .venv
+ENV PACKAGES_PATH="${HOME_PATH}/.venv/lib/${PYTHON_VERSION}/site-packages"
+RUN python -m venv ${HOME_PATH}/.venv
+SHELL ["/bin/bash","-c"]
+ENV PATH="${HOME_PATH}/.venv/bin:${PATH}"
+RUN whoami > /tmp/whoami.txt
+
+# Copy pyproject.toml to be used for version tracking
+COPY pyproject.toml ${HOME_PATH}
+
+# Copy torch and torchvision from the system install to .venv
+RUN rm -rf ${PACKAGES_PATH}/torch* \
+    && rm -rf ${PACKAGES_PATH}/torchvision* \
+    && cd /opt/conda/lib/${PYTHON_VERSION}/site-packages \
+    && cp -rp torch* ${PACKAGES_PATH}/ \
+    && cp -rp torchvision* ${PACKAGES_PATH}
+
+# Install torch dependencies into .venv
+RUN source $HOME_PATH/.venv/bin/activate \
+    && pip install \
+        networkx \
+        sympy==1.13.2 \
+        numpy==1.26.4 \
+        python-etcd==0.4.5 \
+        pillow==10.4.0 \
+        filelock==3.15.4 \
+        fsspec==2024.6.1 \
+        jinja2==3.1.4 \
+        typing-extensions==4.8.0 
+
+# Confirmation that the home directory contains version file
+RUN ls "$HOME_PATH"

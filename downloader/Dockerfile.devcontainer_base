@@ -42,6 +42,7 @@ RUN whoami > /tmp/whoami.txt
 
 # Install Python deps
 RUN source ${HOME_PATH}/.venv/bin/activate \
+    && pip install --upgrade pip==24.2 \
     &&  pip install \
         setuptools \
         wheel \
@@ -70,6 +71,6 @@ RUN source ${HOME_PATH}/.venv/bin/activate \
     && pip install /tmp/gai-downloads/nvidia_cufft_cu12-11.0.2.54-py3-none-manylinux1_x86_64.whl \
     && pip install --no-cache-dir --no-deps --no-index --find-links /tmp/gai-downloads /tmp/gai-downloads/torch-2.2.0+cu121-cp310-cp310-linux_x86_64.whl
 RUN rm /tmp/gai-downloads/triton-* /tmp/gai-downloads/nvidia_* /tmp/gai-downloads/torch-*
-RUN pip install "nvidia-cuda-runtime-cu12==12.1.105" networkx sympy
+# RUN bash cuda_12.1.1_530.30.02_linux.run --no-drm --toolkit --no-man-page --override
+# RUN pip install "nvidia-cuda-runtime-cu12==12.1.105" networkx sympy numpy==1.26.4
 
-COPY --chown=${USERNAME} .devcontainer/postCreateCommand.sh ${HOME_PATH}/postCreateCommand.sh

@@ -2,43 +2,44 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Docker: build base",
+            "label": "Docker: build downloader",
             "type": "shell",
             "command": "/bin/bash",
             "args": [
                 "-c",
-                "cd ${workspaceFolder} && python .vscode/docker_tools.py build gai_torch2.2.0_cuda12.1_ubuntu22.04_base --repo_name='kakkoii1337' --docker_file='.devcontainer/Dockerfile.base' --context_dir='..'"
+                "python .vscode/docker_tools.py build gai_torch2.2.0_cuda12.1_ubuntu22.04_downloader --repo_name='kakkoii1337' --docker_file='.devcontainer/Dockerfile.downloader' --context_dir='..'"
             ],
             "problemMatcher": []
         },
         {
-            "label": "Docker: push base",
+            "label": "Docker: push downloader",
             "type": "shell",
             "command": "/bin/bash",
             "args": [
                 "-c",
-                "cd ${workspaceFolder} && python .vscode/docker_tools.py push gai_torch2.2.0_cuda12.1_ubuntu22.04_base --repo_name='kakkoii1337' --docker_file='.devcontainer/Dockerfile.base' --context_dir='..'"
+                "python .vscode/docker_tools.py push gai_torch2.2.0_cuda12.1_ubuntu22.04_downloader --repo_name='kakkoii1337' --docker_file='.devcontainer/Dockerfile.downloader' --context_dir='..'"
             ],
             "problemMatcher": []
         },
         {
-            "label": "Docker: build devcontainer",
+            "label": "Docker: build devcontainer_base",
             "type": "shell",
             "command": "/bin/bash",
             "args": [
                 "-c",
-                "cd ${workspaceFolder}/.vscode && python docker_tools.py build gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer --repo_name='kakkoii1337' --docker_file='../.devcontainer/Dockerfile.devcontainer' --no-cache "
-                //                "cd ${workspaceFolder}/.vscode && python docker_build_devcontainer.py"
+                "cd ${workspaceFolder}/.vscode && python docker_tools.py build gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer_base --repo_name='kakkoii1337' --docker_file='../.devcontainer/Dockerfile.devcontainer_base'"
+                //"devcontainer build --workspace-folder=${workspaceFolder} --image-name=gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer:latest"
             ],
             "problemMatcher": []
         },
         {
-            "label": "Docker: push devcontainer",
+            "label": "Docker: push devcontainer_base",
             "type": "shell",
             "command": "/bin/bash",
             "args": [
                 "-c",
-                "cd ${workspaceFolder}/.vscode && python docker_tools.py push gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer --repo_name='kakkoii1337' --docker_file='../.devcontainer/Dockerfile.devcontainer' "
+                "cd ${workspaceFolder}/.vscode && python docker_tools.py push gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer_base --repo_name='kakkoii1337' --docker_file='../devcontainer/Dockerfile.devcontainer_base' "
+                //"devcontainer build --workspace-folder=${workspaceFolder} --push true --image-name gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer:latest"
             ],
             "problemMatcher": []
         },
@@ -48,7 +49,7 @@
             "command": "/bin/bash",
             "args": [
                 "-c",
-                "cd ${workspaceFolder}/.vscode && python docker_build.py gai_torch2.2.0_cuda12.1_ubuntu22.04_builder --repo_name='kakkoii1337'"
+                "gai docker build ${workspaceFolder}/pyproject.toml --image_name=gai_torch2.2.0_cuda12.1_ubuntu22.04_builder --dockerfile_path='Dockerfile'"
             ],
             "problemMatcher": []
         },
@@ -58,7 +59,8 @@
             "command": "/bin/bash",
             "args": [
                 "-c",
-                "cd ${workspaceFolder}/.vscode && python docker_push.py"
+                "gai docker push ${workspaceFolder}/pyproject.toml --image_name=gai_torch2.2.0_cuda12.1_ubuntu22.04_builder --dockerfile_path='Dockerfile'"
+                //"python .vscode/docker_tools.py push ${workspaceFolder}/pyproject.toml --image_name=gai_torch2.2.0_cuda12.1_ubuntu22.04_builder --dockerfile_path='../Dockerfile'"
             ],
             "problemMatcher": []
         },
