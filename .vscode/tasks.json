@@ -2,33 +2,43 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Docker: build downloader",
+            "label": "PyPI: update gai-sdk",
             "type": "shell",
             "command": "/bin/bash",
             "args": [
                 "-c",
-                "python .vscode/docker_tools.py build gai_torch2.2.0_cuda12.1_ubuntu22.04_downloader --repo_name='kakkoii1337' --docker_file='.devcontainer/Dockerfile.downloader' --context_dir='..'"
+                "pip install --upgrade gai-sdk"
             ],
             "problemMatcher": []
         },
-        {
-            "label": "Docker: push downloader",
-            "type": "shell",
-            "command": "/bin/bash",
-            "args": [
-                "-c",
-                "python .vscode/docker_tools.py push gai_torch2.2.0_cuda12.1_ubuntu22.04_downloader --repo_name='kakkoii1337' --docker_file='.devcontainer/Dockerfile.downloader' --context_dir='..'"
-            ],
-            "problemMatcher": []
-        },
+        // {
+        //     "label": "Docker: build downloader",
+        //     "type": "shell",
+        //     "command": "/bin/bash",
+        //     "args": [
+        //         "-c",
+        //         "python .vscode/docker_tools.py build gai_torch2.2.0_cuda12.1_ubuntu22.04_downloader --repo_name='kakkoii1337' --docker_file='.devcontainer/Dockerfile.downloader' --context_dir='..'"
+        //     ],
+        //     "problemMatcher": []
+        // },
+        // {
+        //     "label": "Docker: push downloader",
+        //     "type": "shell",
+        //     "command": "/bin/bash",
+        //     "args": [
+        //         "-c",
+        //         "python .vscode/docker_tools.py push gai_torch2.2.0_cuda12.1_ubuntu22.04_downloader --repo_name='kakkoii1337' --docker_file='.devcontainer/Dockerfile.downloader' --context_dir='..'"
+        //     ],
+        //     "problemMatcher": []
+        // },
         {
             "label": "Docker: build devcontainer_base",
             "type": "shell",
             "command": "/bin/bash",
             "args": [
                 "-c",
-                "cd ${workspaceFolder}/.vscode && python docker_tools.py build gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer_base --repo_name='kakkoii1337' --docker_file='../.devcontainer/Dockerfile.devcontainer_base'"
-                //"devcontainer build --workspace-folder=${workspaceFolder} --image-name=gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer:latest"
+                "gai docker build ${workspaceFolder}/pyproject.toml --image-name=gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer_base --dockerfile-path='.devcontainer/Dockerfile.devcontainer_base'"
+                //"python docker_tools.py build gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer_base --repo_name='kakkoii1337' --docker_file='../.devcontainer/Dockerfile.devcontainer_base'"
             ],
             "problemMatcher": []
         },
@@ -38,31 +48,32 @@
             "command": "/bin/bash",
             "args": [
                 "-c",
-                "cd ${workspaceFolder}/.vscode && python docker_tools.py push gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer_base --repo_name='kakkoii1337' --docker_file='../devcontainer/Dockerfile.devcontainer_base' "
+                "gai docker push ${workspaceFolder}/pyproject.toml --image-name=gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer_base --dockerfile-path='.devcontainer/Dockerfile.devcontainer_base'"
+                //"cd ${workspaceFolder}/.vscode && python docker_tools.py push gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer_base --repo_name='kakkoii1337' --docker_file='../devcontainer/Dockerfile.devcontainer_base' "
                 //"devcontainer build --workspace-folder=${workspaceFolder} --push true --image-name gai_torch2.2.0_cuda12.1_ubuntu22.04_devcontainer:latest"
             ],
             "problemMatcher": []
         },
-        {
-            "label": "Docker: build",
-            "type": "shell",
-            "command": "/bin/bash",
-            "args": [
-                "-c",
-                "gai docker build ${workspaceFolder}/pyproject.toml --image_name=gai_torch2.2.0_cuda12.1_ubuntu22.04_builder --dockerfile_path='Dockerfile'"
-            ],
-            "problemMatcher": []
-        },
-        {
-            "label": "Docker: push",
-            "type": "shell",
-            "command": "/bin/bash",
-            "args": [
-                "-c",
-                "gai docker push ${workspaceFolder}/pyproject.toml --image_name=gai_torch2.2.0_cuda12.1_ubuntu22.04_builder --dockerfile_path='Dockerfile'"
-                //"python .vscode/docker_tools.py push ${workspaceFolder}/pyproject.toml --image_name=gai_torch2.2.0_cuda12.1_ubuntu22.04_builder --dockerfile_path='../Dockerfile'"
-            ],
-            "problemMatcher": []
-        },
+        // {
+        //     "label": "Docker: build",
+        //     "type": "shell",
+        //     "command": "/bin/bash",
+        //     "args": [
+        //         "-c",
+        //         "gai docker build ${workspaceFolder}/pyproject.toml --image_name=gai_torch2.2.0_cuda12.1_ubuntu22.04_builder --dockerfile_path='Dockerfile'"
+        //     ],
+        //     "problemMatcher": []
+        // },
+        // {
+        //     "label": "Docker: push",
+        //     "type": "shell",
+        //     "command": "/bin/bash",
+        //     "args": [
+        //         "-c",
+        //         "gai docker push ${workspaceFolder}/pyproject.toml --image_name=gai_torch2.2.0_cuda12.1_ubuntu22.04_builder --dockerfile_path='Dockerfile'"
+        //         //"python .vscode/docker_tools.py push ${workspaceFolder}/pyproject.toml --image_name=gai_torch2.2.0_cuda12.1_ubuntu22.04_builder --dockerfile_path='../Dockerfile'"
+        //     ],
+        //     "problemMatcher": []
+        // },
     ]
 }
